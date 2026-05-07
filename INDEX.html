@@ -456,6 +456,8 @@ function renderMap(){
     });
   }
 
+  addLabels(svg);
+
   const badge = document.getElementById('mode-badge');
   if(diseases.length === 0) badge.textContent = 'sin datos';
   else if(diseases.length === 1){ badge.textContent = 'tonalidades'; badge.className='badge single'; }
