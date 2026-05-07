@@ -541,19 +541,26 @@ function drawDeptStripes(svg, dept, colors){
 }
 
 function addLabels(svg){
+  const mergeCallao = document.getElementById('merge-callao').checked;
   DEPTS.forEach(dept => {
     if(SMALL_DEPTS.has(dept)) return;
     const c = DEPT_CENTERS[dept];
     if(!c) return;
+    const hasCases = diseases.length > 0 && diseases.some((_, i) => {
+      const v = parseInt(deptData[dept]?.[i]) || 0;
+      const vCallao = (mergeCallao && dept === 'Lima') ? (parseInt(deptData['Callao']?.[i]) || 0) : 0;
+      return (v + vCallao) > 0;
+    });
+    if(!hasCases) return;
     const t = document.createElementNS('http://www.w3.org/2000/svg','text');
     t.setAttribute('x', c[0]);
     t.setAttribute('y', c[1]);
     t.setAttribute('text-anchor', 'middle');
     t.setAttribute('dominant-baseline', 'middle');
-    t.setAttribute('font-size', '5.8');
+    t.setAttribute('font-size', '12');
     t.setAttribute('font-family', 'DM Sans, sans-serif');
-    t.setAttribute('fill', '#444');
-    t.setAttribute('font-weight', '500');
+    t.setAttribute('fill', '#111');
+    t.setAttribute('font-weight', '600');
     t.setAttribute('pointer-events', 'none');
     const name = dept.length > 12 ? dept.substring(0,11)+'…' : dept;
     t.textContent = name;
